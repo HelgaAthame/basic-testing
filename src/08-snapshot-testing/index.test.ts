@@ -16,10 +16,10 @@ const testResult = {
             value: null,
             next: null,
           },
-        }
-      }
-    }
-  }
+        },
+      },
+    },
+  },
 };
 
 describe('generateLinkedList', () => {

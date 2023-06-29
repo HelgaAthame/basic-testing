@@ -1,5 +1,11 @@
 // Uncomment the code below and write your tests
-import { throwError, throwCustomError, resolveValue, MyAwesomeError, rejectCustomError } from './index';
+import {
+  throwError,
+  throwCustomError,
+  resolveValue,
+  MyAwesomeError,
+  rejectCustomError,
+} from './index';
 
 describe('resolveValue', () => {
   test('should resolve provided value', async () => {
@@ -10,9 +16,10 @@ describe('resolveValue', () => {
 
 describe('throwError', () => {
   test('should throw error with provided message', () => {
-    const testFunc = throwError.bind(null, 'some error message');
+    const errorMessage = 'some error message';
+    const testFunc = throwError.bind(null, errorMessage);
     expect(testFunc).toThrow(Error);
-    expect(testFunc).toThrow('some error message');
+    expect(testFunc).toThrow(errorMessage);
   });
 
   test('should throw error with default message if message is not provided', () => {
@@ -31,6 +38,6 @@ describe('throwCustomError', () => {
 describe('rejectCustomError', () => {
   test('should reject custom error', async () => {
     expect.assertions(1);
-    return expect(rejectCustomError).rejects.toEqual(new MyAwesomeError);
+    return expect(rejectCustomError).rejects.toEqual(new MyAwesomeError());
   });
 });
