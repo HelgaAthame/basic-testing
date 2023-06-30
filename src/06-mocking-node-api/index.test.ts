@@ -1,5 +1,5 @@
 // Uncomment the code below and write your tests
-import { readFile } from 'fs/promises';
+import fsPromises from 'fs/promises';
 import { readFileAsynchronously, doStuffByTimeout, doStuffByInterval } from '.';
 import path from 'path';
 
@@ -25,7 +25,9 @@ describe('doStuffByTimeout', () => {
 
   test('should call callback only after timeout', () => {
     jest.spyOn(global, 'setTimeout');
-    doStuffByTimeout(func, time);
+    const callBack = jest.fn();
+    doStuffByTimeout(callBack, time);
+    jest.advanceTimersByTime(time);
     expect(setTimeout).toHaveBeenCalledTimes(1);
   });
 });
@@ -68,10 +70,12 @@ describe('readFileAsynchronously', () => {
   });
 
   test('should return file content if file exists', async () => {
-    const fullPath = path.join(__dirname, pathToFile);
-    const data = await readFile(fullPath);
-    const fileContent = data.toString();
+    const data = 'some test data';
+    const promise: Promise<string | Buffer> = new Promise((resolve) =>
+      resolve(Buffer.from(data, 'utf-8')),
+    );
+    jest.spyOn(fsPromises, 'readFile').mockReturnValue(promise);
     const result = await readFileAsynchronously(pathToFile);
-    expect(result).toEqual(fileContent);
+    expect(result).toEqual(data);
   });
 });
